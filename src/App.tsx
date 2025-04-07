@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react'
 import './App.css'
 
 function App() {
-  const [messageFromNative, setMessageFromNative] = useState('');
   const [location, setLocation] = useState<{ latitude: number, longitude: number } | null>(null);
+
 
   useEffect(() => {
     const handleMessage = (e: MessageEvent) => {
@@ -16,8 +16,6 @@ function App() {
             longitude: data.longitude,
           })
         }
-
-        setMessageFromNative(JSON.stringify(e.data));
       } catch (error) {
         console.error('Native訊息錯誤', error);
       }
@@ -27,10 +25,13 @@ function App() {
     return () => window.removeEventListener('message', handleMessage);
   }, []);
 
+
   const sendMsgToNative = () => {
     const msg = JSON.stringify({ type: 'FROM_WEB', content: 'Hello from Web~~~' });
     if ((window as any).ReactNativeWebView) {
       (window as any).ReactNativeWebView.postMessage(msg);
+    } else {
+      alert('sendMsgToNative Failed!');
     }
   }
 
@@ -38,8 +39,15 @@ function App() {
     <>
       <div>
         <h3>我是Webview~~</h3>
-        <p>來自Native框的訊息: {messageFromNative}</p>
-        <button onClick={sendMsgToNative}>傳送訊息到Native框</button>
+        <p>
+          <strong>
+            目前位置:
+            {location ? (
+              <span> [{location?.longitude} , {location?.latitude}]</span>
+            ) : '尚未取得位置'}
+          </strong>
+        </p>
+        <button onClick={sendMsgToNative}>向Native框要求位置</button>
       </div>
     </>
   )
