@@ -14,13 +14,12 @@ function App() {
             latitude: data.latitude,
             longitude: data.longitude,
           });
-          alert(`Init取得座標 ${location}`);
         }
       } catch (error) {
         console.error('Native訊息錯誤', error);
       }
     }
-
+    alert(`Init取得座標 ${location}`);
     window.addEventListener('message', handleMessage); // Init取得座標
     return () => window.removeEventListener('message', handleMessage);
   }, []);
