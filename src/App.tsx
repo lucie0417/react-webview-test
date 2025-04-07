@@ -10,7 +10,6 @@ function App() {
       try {
         const data = JSON.parse(e.data);
         if (data.type === 'UPDATE_LOCATION') {
-          if (location) return;
           setLocation({
             latitude: data.latitude,
             longitude: data.longitude,
@@ -24,7 +23,7 @@ function App() {
 
     window.addEventListener('message', handleMessage); // Init取得座標
     return () => window.removeEventListener('message', handleMessage);
-  }, [location]);
+  }, []);
 
 
   const sendMsgToNative = () => {
