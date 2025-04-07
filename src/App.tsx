@@ -42,7 +42,7 @@ function App() {
         <p>
             目前位置:
             {location ? (
-              <span> [{location?.longitude} , {location?.latitude}]</span>
+              <span> [{location.longitude} , {location.latitude}]</span>
             ) : '尚未取得位置'}
         </p>
         <button onClick={sendMsgToNative}>向Native框要求位置</button>
