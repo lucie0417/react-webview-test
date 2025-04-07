@@ -37,7 +37,7 @@ function App() {
   return (
     <>
       <div>
-        <h3>我是Webview~~</h3>
+        <h3>我是React Webview~~</h3>
         <p>
             目前位置:
             {location ? (
