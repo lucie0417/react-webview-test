@@ -9,6 +9,7 @@ function App() {
     const handleMessage = (e: MessageEvent) => {
       try {
         const data = JSON.parse(e.data);
+        alert(`Init取得座標 ${JSON.stringify(e.data)}`);
         if (data.type === 'UPDATE_LOCATION') {
           setLocation({
             latitude: data.latitude,
@@ -20,7 +21,7 @@ function App() {
       }
     }
 
-    window.addEventListener('message', handleMessage);
+    window.addEventListener('message', handleMessage); // Init取得座標
     return () => window.removeEventListener('message', handleMessage);
   }, []);
 
