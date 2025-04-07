@@ -8,7 +8,6 @@ function App() {
   useEffect(() => {
     const handleMessage = (e: MessageEvent) => {
       try {
-        alert(`React收到來自Native ${JSON.stringify(e.data)}`);
         const data = JSON.parse(e.data);
         if (data.type === 'UPDATE_LOCATION') {
           setLocation({
@@ -40,12 +39,10 @@ function App() {
       <div>
         <h3>我是Webview~~</h3>
         <p>
-          <strong>
             目前位置:
             {location ? (
               <span> [{location?.longitude} , {location?.latitude}]</span>
             ) : '尚未取得位置'}
-          </strong>
         </p>
         <button onClick={sendMsgToNative}>向Native框要求位置</button>
       </div>
