@@ -14,7 +14,7 @@ function App() {
             latitude: data.latitude,
             longitude: data.longitude,
           });
-          alert(`Init取得座標 ${JSON.stringify(e.data)}`);
+          alert(`Init取得座標 ${location}`);
         }
       } catch (error) {
         console.error('Native訊息錯誤', error);
@@ -23,7 +23,7 @@ function App() {
 
     window.addEventListener('message', handleMessage); // Init取得座標
     return () => window.removeEventListener('message', handleMessage);
-  }, [location]);
+  }, []);
 
 
   const sendMsgToNative = () => {
