@@ -10,7 +10,7 @@ function App() {
       try {
         const data = JSON.parse(e.data);
 
-        if (data.type === 'UPDATE_LOCATION') {
+        if (data.type === 'INIT_LOCATION') {
           setLocation({
             latitude: data.latitude,
             longitude: data.longitude,
@@ -28,7 +28,7 @@ function App() {
 
 
   const sendMsgToNative = () => {
-    const msg = JSON.stringify({ type: 'FROM_WEB', content: 'Hello from Web~~~' });
+    const msg = JSON.stringify({ type: 'UPDATE_LOCATION_FROM_WEB', content: '重取座標~~~' });
     if ((window as any).ReactNativeWebView) {
       (window as any).ReactNativeWebView.postMessage(msg);
     } else {
