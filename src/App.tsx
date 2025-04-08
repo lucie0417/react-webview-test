@@ -9,6 +9,7 @@ function App() {
     const handleMessage = (e: MessageEvent) => {
       try {
         const data = JSON.parse(e.data);
+        alert(`${JSON.stringify(e.data)}`);
         if (data.type === 'UPDATE_LOCATION') {
           setLocation({
             latitude: data.latitude,
