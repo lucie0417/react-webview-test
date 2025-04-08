@@ -9,7 +9,7 @@ function App() {
     const handleMessage = (e: MessageEvent) => {
       try {
         const data = JSON.parse(e.data);
-        
+
         if (data.type === 'UPDATE_LOCATION') {
           setLocation({
             latitude: data.latitude,
@@ -22,6 +22,7 @@ function App() {
       }
     }
     window.addEventListener('message', handleMessage); // Init取得座標
+    document.addEventListener('message', handleMessage as EventListener); // 此為 Android 某些系統使用
     return () => window.removeEventListener('message', handleMessage);
   }, []);
 
