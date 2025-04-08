@@ -9,13 +9,13 @@ function App() {
     const handleMessage = (e: MessageEvent) => {
       try {
         const data = JSON.parse(e.data);
-        alert(`${JSON.stringify(e.data)}`);
+        
         if (data.type === 'UPDATE_LOCATION') {
           setLocation({
             latitude: data.latitude,
             longitude: data.longitude,
           });
-          alert(`Init取得座標 ${JSON.stringify(e.data)}`);
+          alert(`Web Init取得座標 ${JSON.stringify(e.data)}`);
         }
       } catch (error) {
         console.error('Native訊息錯誤', error);
