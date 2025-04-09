@@ -22,7 +22,7 @@ function App() {
       }
     }
     window.addEventListener('message', handleMessage); // Init取得座標
-    document.addEventListener('message', handleMessage as EventListener); // 此為 Android 某些系統使用
+    document.addEventListener('message', handleMessage as EventListener); // For Android 特定系統使用
     return () => window.removeEventListener('message', handleMessage);
   }, []);
 
@@ -36,6 +36,15 @@ function App() {
     }
   }
 
+  const turnOffGPS = () => {
+    const msg = JSON.stringify({ type: 'GPS_OFF_FROM_WEB', content: '關閉GPS!' });
+    if ((window as any).ReactNativeWebView) {
+      (window as any).ReactNativeWebView.postMessage(msg);
+    } else {
+      alert('turnOffGPS Failed!');
+    }
+  }
+
   return (
     <>
       <div>
@@ -46,7 +55,8 @@ function App() {
             <span> [{location?.longitude} , {location?.latitude}]</span>
           ) : '尚未取得位置'}
         </p>
-        <button onClick={sendMsgToNative}>向Native框要求位置</button>
+        <button onClick={sendMsgToNative}>向Native APP框要求位置</button>
+        <button onClick={turnOffGPS}>關閉GPS</button>
       </div>
     </>
   )
