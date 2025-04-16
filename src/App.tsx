@@ -45,6 +45,8 @@ function App() {
       content: '重取座標!'
     };
     (window as any).ReactNativeWebView?.postMessage(JSON.stringify(payload));
+
+    localStorage.setItem('GPS_ENABLED', 'true');
   }
 
   // 關閉GPS
