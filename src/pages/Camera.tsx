@@ -4,11 +4,18 @@ const Camera = () => {
     useEffect(() => {
         const handleMessage = (e: MessageEvent) => {
             try {
+                const data = JSON.parse(e.data);
 
+                if (data.status === 'sendPhoto') {
+                    alert(data.message);
+                }
             } catch (error) {
-
+                console.error('訊息錯誤', error);
             }
         }
+
+        window.addEventListener('message', handleMessage); // Init取得座標
+        document.addEventListener('message', handleMessage as EventListener); // For Android 特定系統使用
     }, []);
 
     const openCamera = () => {

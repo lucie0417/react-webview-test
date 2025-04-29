@@ -1,6 +1,14 @@
+import { Link } from "react-router-dom";
+
+
 const Home = () => {
+
     return (
-        <div>HOME!</div>
+        <div>
+            <h1>HOME!</h1>
+            <Link to="/gps">GPS!</Link>
+            <Link to="/camera">CAMERA!</Link>
+        </div >
     )
 }
 
