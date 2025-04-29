@@ -16,6 +16,11 @@ const Camera = () => {
 
         window.addEventListener('message', handleMessage); // Init取得座標
         document.addEventListener('message', handleMessage as EventListener); // For Android 特定系統使用
+
+        return () => {
+            window.removeEventListener('message', handleMessage);
+            document.removeEventListener('message', handleMessage as EventListener);
+        }
     }, []);
 
     const openCamera = () => {
