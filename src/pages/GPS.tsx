@@ -11,7 +11,7 @@ const GPS = () => {
             try {
                 const data = JSON.parse(e.data);
 
-                if (data.type === 'LOCATION_INFO') {
+                if (data.status === 'LOCATION_INFO') {
                     setLocation({
                         latitude: data.latitude,
                         longitude: data.longitude,
