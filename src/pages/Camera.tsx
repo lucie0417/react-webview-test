@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 const Camera = () => {
     useEffect(() => {
@@ -21,7 +21,7 @@ const Camera = () => {
     const openCamera = () => {
         const payload = {
             action: 'openCamera',
-            content: '開啟相機!',
+            payload: '開啟相機!',
         };
         (window as any).ReactNativeWebView?.postMessage(JSON.stringify(payload));
     }
