@@ -47,19 +47,23 @@ const Camera = () => {
     }
 
     // 下載
-    const downloadPhoto = () => {
-        if (!photoUrl) return;
+    // const downloadPhoto = () => {
+    //     if (!photoUrl) return;
 
-        const link = document.createElement('a');
-        link.href = photoUrl;
-        link.download = 'download_photo.png';
-        link.click();
-    }
+    //     const link = document.createElement('a');
+    //     link.href = photoUrl;
+    //     link.download = 'download_photo.png';
+    //     link.click();
+    // }
 
     const sendPhoto = () => {
+        console.log('photoUrl', photoUrl);
+
+
         const payload = {
             action: 'SEND_PHOTO',
-            content: '傳送拍攝照片'
+            content: '傳送拍攝照片',
+            photoUrl: photoUrl,
         };
         (window as any).ReactNativeWebView?.postMessage(JSON.stringify(payload));
     }
