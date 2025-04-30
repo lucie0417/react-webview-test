@@ -13,6 +13,9 @@ const Camera = () => {
                 video: { facingMode: 'environment' }, // user前鏡頭、environment後鏡頭
                 audio: false,
             });
+            console.log('stream', stream);
+
+            console.log('canvasRef', canvasRef);
 
             if (videoRef.current) {
                 videoRef.current.srcObject = stream;
@@ -25,12 +28,12 @@ const Camera = () => {
         }
     }
 
+    // 拍照
     const capturePhoto = () => {
         const video = videoRef.current;
         const canvas = canvasRef.current;
         if (!video || !canvas) return;
 
-        // 設定 canvas 尺寸跟 video 一樣
         canvas.width = video.videoWidth;
         canvas.height = video.videoHeight;
 
@@ -38,54 +41,66 @@ const Camera = () => {
         if (ctx) {
             ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-            const dataUrl = canvas.toDataURL('image/png'); // 轉成 base64 png 圖片
-            setPhotoUrl(dataUrl); // 儲存照片
+            const dataUrl = canvas.toDataURL('image/png'); // 轉成base64 png
+            setPhotoUrl(dataUrl);
         }
+    }
+
+    // 下載
+    const downloadPhoto = () => {
+        if (!photoUrl) return;
+
+        const link = document.createElement('a');
+        link.href = photoUrl;
+        link.download = 'download_photo.png';
+        link.click();
     }
 
     return (
         <div style={{ textAlign: 'center', padding: '20px' }}>
             <h2>Web相機</h2>
-
+    
             <div style={{ marginBottom: '20px' }}>
                 <button onClick={startCamera} style={{ marginRight: '10px' }}>啟動相機</button>
                 <button onClick={capturePhoto} disabled={!isCameraOn}>拍照</button>
             </div>
-
+    
             {error && <p style={{ color: 'red' }}>{error}</p>}
-
-            {/* 即時影像 */}
-            <video
-                ref={videoRef}
-                style={{ width: '90%', border: '1px solid #ccc', borderRadius: '8px' }}
-                playsInline
-                muted
-            />
-
-            {/* canvas 是隱藏的，不直接顯示 */}
+    
+            <div style={{ display: 'flex', justifyContent: 'center', gap: '20px' }}>
+                {/* 即時影像 */}
+                <video
+                    ref={videoRef}
+                    style={{ width: '320px', border: '1px solid #ccc', borderRadius: '8px' }}
+                    playsInline
+                    muted
+                />
+    
+                {/* 預覽圖 */}
+                {photoUrl && (
+                    <div>
+                        <img
+                            src={photoUrl}
+                            alt="拍照"
+                            style={{ width: '320px', borderRadius: '8px', border: '1px solid #666' }}/>
+                    </div>
+                )}
+            </div>
+    
+            {/* 隱藏 canvas */}
             <canvas ref={canvasRef} style={{ display: 'none' }} />
-
-            {/* 預覽圖 */}
+    
+            {/* 下載按鈕 */}
             {photoUrl && (
                 <div style={{ marginTop: '20px' }}>
-                    <h4>預覽</h4>
-                    <img
-                        src={photoUrl}
-                        alt="拍照"
-                        style={{ maxWidth: '90%', borderRadius: '8px', border: '1px solid #666' }}
-                    />
-                    {/* <div style={{ marginTop: '10px' }}>
-                    <button onClick={downloadPhoto} style={{ marginRight: '10px' }}>
+                    <button onClick={downloadPhoto}>
                         下載照片
                     </button>
-                    <button onClick={uploadPhoto}>
-                        上傳照片
-                    </button>
-                </div> */}
                 </div>
             )}
         </div>
-    )
+    );
+    
 }
 
 export default Camera;
