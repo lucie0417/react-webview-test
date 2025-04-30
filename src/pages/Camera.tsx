@@ -13,9 +13,6 @@ const Camera = () => {
                 video: { facingMode: 'environment' }, // user前鏡頭、environment後鏡頭
                 audio: false,
             });
-            console.log('stream', stream);
-
-            console.log('canvasRef', canvasRef);
 
             if (videoRef.current) {
                 videoRef.current.srcObject = stream;
@@ -46,19 +43,25 @@ const Camera = () => {
         }
     }
 
-    // 下載
-    // const downloadPhoto = () => {
-    //     if (!photoUrl) return;
+    const stopCamera = () => {
+        if (videoRef.current?.srcObject) {
+            const stream = videoRef.current?.srcObject as MediaStream;
+            stream.getTracks().forEach((track) => track.stop()); // video track, audio track..
+            videoRef.current.srcObject = null; // 將來源清空
+            setIsCameraOn(false);
+        }
+    }
 
-    //     const link = document.createElement('a');
-    //     link.href = photoUrl;
-    //     link.download = 'download_photo.png';
-    //     link.click();
-    // }
+    const toggleCamera = () => {
+        if (isCameraOn) {
+            stopCamera();
+        } else {
+            startCamera();
+        }
+    }
 
     const sendPhoto = () => {
         console.log('photoUrl', photoUrl);
-
 
         const payload = {
             action: 'SEND_PHOTO',
@@ -73,7 +76,9 @@ const Camera = () => {
             <h2>Web相機</h2>
 
             <div style={{ marginBottom: '20px' }}>
-                <button onClick={startCamera} style={{ marginRight: '10px' }}>啟動相機</button>
+                <button onClick={toggleCamera} style={{ marginRight: '10px' }}>
+                    {isCameraOn ? '關閉相機' : '啟動相機'}
+                </button>
                 <button onClick={capturePhoto} disabled={!isCameraOn}>拍照</button>
             </div>
 
