@@ -56,17 +56,25 @@ const Camera = () => {
         link.click();
     }
 
+    const sendPhoto = () => {
+        const payload = {
+            action: 'SEND_PHOTO',
+            content: '傳送拍攝照片'
+        };
+        (window as any).ReactNativeWebView?.postMessage(JSON.stringify(payload));
+    }
+
     return (
         <div style={{ textAlign: 'center', padding: '20px' }}>
             <h2>Web相機</h2>
-    
+
             <div style={{ marginBottom: '20px' }}>
                 <button onClick={startCamera} style={{ marginRight: '10px' }}>啟動相機</button>
                 <button onClick={capturePhoto} disabled={!isCameraOn}>拍照</button>
             </div>
-    
+
             {error && <p style={{ color: 'red' }}>{error}</p>}
-    
+
             <div style={{ display: 'flex', justifyContent: 'center', gap: '20px' }}>
                 {/* 即時影像 */}
                 <video
@@ -75,32 +83,32 @@ const Camera = () => {
                     playsInline
                     muted
                 />
-    
+
                 {/* 預覽圖 */}
                 {photoUrl && (
                     <div>
                         <img
                             src={photoUrl}
                             alt="拍照"
-                            style={{ width: '320px', borderRadius: '8px', border: '1px solid #666' }}/>
+                            style={{ width: '320px', borderRadius: '8px', border: '1px solid #666' }} />
                     </div>
                 )}
             </div>
-    
+
             {/* 隱藏 canvas */}
             <canvas ref={canvasRef} style={{ display: 'none' }} />
-    
+
             {/* 下載按鈕 */}
             {photoUrl && (
                 <div style={{ marginTop: '20px' }}>
-                    <button onClick={downloadPhoto}>
+                    <button onClick={sendPhoto}>
                         下載照片
                     </button>
                 </div>
             )}
         </div>
     );
-    
+
 }
 
 export default Camera;
