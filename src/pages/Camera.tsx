@@ -100,7 +100,7 @@ const Camera = () => {
         <div style={{ textAlign: 'center', padding: '20px' }}>
             <h2>Web相機</h2>
 
-            {!hasPermission && (
+            {hasPermission === false && (
                 <p style={{ color: 'red' }}>⚠️未授權相機，無法使用拍照功能</p>
             )}
 
