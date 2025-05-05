@@ -36,7 +36,7 @@ const Camera = () => {
         }
     }, []);
 
-   // 開啟/關閉相機
+    // 開啟/關閉相機
     const toggleCamera = () => {
         if (isCameraOn) {
             stopCamera();
@@ -44,7 +44,7 @@ const Camera = () => {
             startCamera();
         }
     };
-    
+
     const startCamera = async () => {
         try {
             const stream = await navigator.mediaDevices.getUserMedia({
@@ -61,8 +61,8 @@ const Camera = () => {
             console.error('相機開啟失敗', err);
             setError('無法開啟相機，檢查權限或裝置是否支援');
         }
-    } 
-    
+    }
+
     const stopCamera = () => {
         if (videoRef.current?.srcObject) {
             const stream = videoRef.current?.srcObject as MediaStream;
@@ -96,6 +96,7 @@ const Camera = () => {
 
         stopCamera();
         setFacingMode(prev => prev === 'user' ? 'environment' : 'user');
+        startCamera();
     }
 
     useEffect(() => {
