@@ -11,17 +11,15 @@ const Camera = () => {
 
     useEffect(() => {
         const payload = {
-            action: 'GET_CAMERA_PERMISSION',
-            content: '要求APP取得相機權限',
+            action: 'REQUEST_CAMERA_PERMISSION',
+            content: 'Web 請求 App 取得相機權限',
         };
         (window as any).ReactNativeWebView?.postMessage(JSON.stringify(payload));
 
         const handleMessage = (e: MessageEvent) => {
             try {
                 const data = JSON.parse(e.data);
-                alert(`收到訊息 ${JSON.stringify(data)}`);
-
-                if (data.action === 'CAMERA_PERMISSION') {
+                if (data.action === 'CAMERA_PERMISSION_SENT') {
                     setHasPermission(data.granted);
                 }
             } catch (error) {
