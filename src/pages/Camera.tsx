@@ -10,6 +10,12 @@ const Camera = () => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
     useEffect(() => {
+        const payload = {
+            action: 'GET_CAMERA_PERMISSION',
+            content: '要求APP取得相機權限',
+        };
+        (window as any).ReactNativeWebView?.postMessage(JSON.stringify(payload));
+
         const handleMessage = (e: MessageEvent) => {
             try {
                 const data = JSON.parse(e.data);
@@ -25,6 +31,7 @@ const Camera = () => {
 
         window.addEventListener('message', handleMessage);
         document.addEventListener('message', handleMessage as EventListener);
+
         return () => {
             window.removeEventListener('message', handleMessage);
             document.removeEventListener('message', handleMessage as EventListener);
