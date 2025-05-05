@@ -105,7 +105,7 @@ const Camera = () => {
             )}
 
 
-            {hasPermission && (
+            {hasPermission === true && (
                 <>
                     <div style={{ marginBottom: '20px' }}>
                         <button onClick={toggleCamera} style={{ marginRight: '10px' }}>
