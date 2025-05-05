@@ -40,7 +40,7 @@ const Camera = () => {
     const startCamera = async () => {
         try {
             const stream = await navigator.mediaDevices.getUserMedia({
-                video: { facingMode }, // user前鏡頭、environment後鏡頭
+                video: { facingMode: 'environment' }, // user前鏡頭、environment後鏡頭
                 audio: false,
             });
 
