@@ -4,7 +4,7 @@ const Camera = () => {
     const [hasPermission, setHasPermission] = useState<boolean | null>(null);
     const [photoUrl, setPhotoUrl] = useState<string | null>(null);
     const [isCameraOn, setIsCameraOn] = useState(false);
-    const [facingMode, setFacingMode] = useState<'user' | 'enviroment'>('enviroment');
+    const [facingMode, setFacingMode] = useState<'user' | 'environment'>('environment');
     const [error, setError] = useState<string | null>(null);
     const videoRef = useRef<HTMLVideoElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -36,11 +36,15 @@ const Camera = () => {
         }
     }, []);
 
+    useEffect(() => {
+        if (isCameraOn) startCamera();
+    }, [facingMode])
+
 
     const startCamera = async () => {
         try {
             const stream = await navigator.mediaDevices.getUserMedia({
-                video: { facingMode: 'environment' }, // user前鏡頭、environment後鏡頭
+                video: { facingMode }, // user前鏡頭、environment後鏡頭
                 audio: false,
             });
 
@@ -82,12 +86,11 @@ const Camera = () => {
         }
     }
 
-    const toggleCamera = () => {
-        if (isCameraOn) {
-            stopCamera();
-        } else {
-            startCamera();
-        }
+    const switchCamera = async () => {
+        if (!isCameraOn) return;
+
+        stopCamera();
+        setFacingMode(prev => prev === 'user' ? 'environment' : 'user');
     }
 
     const sendPhoto = () => {
@@ -113,10 +116,11 @@ const Camera = () => {
             {hasPermission === true && (
                 <>
                     <div style={{ marginBottom: '20px' }}>
-                        <button onClick={toggleCamera} style={{ marginRight: '10px' }}>
+                        <button onClick={switchCamera} style={{ marginRight: '10px' }}>
                             {isCameraOn ? '關閉相機' : '啟動相機'}
                         </button>
                         <button onClick={capturePhoto} disabled={!isCameraOn}>拍照</button>
+                        <button onClick={switchCamera} disabled={!isCameraOn}>切換前/後鏡頭</button>
                     </div>
 
                     {error && <p style={{ color: 'red' }}>{error}</p>}
