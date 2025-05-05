@@ -1,16 +1,41 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const Camera = () => {
-    const videoRef = useRef<HTMLVideoElement>(null);
-    const canvasRef = useRef<HTMLCanvasElement>(null);
+    const [hasPermission, setHasPermission] = useState<boolean | null>(null);
     const [photoUrl, setPhotoUrl] = useState<string | null>(null);
     const [isCameraOn, setIsCameraOn] = useState(false);
+    const [facingMode, setFacingMode] = useState<'user' | 'enviroment'>('enviroment');
     const [error, setError] = useState<string | null>(null);
+    const videoRef = useRef<HTMLVideoElement>(null);
+    const canvasRef = useRef<HTMLCanvasElement>(null);
+
+    useEffect(() => {
+        const handleMessage = (e: MessageEvent) => {
+            try {
+                const data = JSON.parse(e.data);
+                alert(`收到訊息 ${JSON.stringify(data)}`);
+
+                if (data.action === 'CAMERA_PERMISSION') {
+                    setHasPermission(data.granted);
+                }
+            } catch (error) {
+                console.error(`Message 解析錯誤`, error);
+            }
+        }
+
+        window.addEventListener('message', handleMessage);
+        document.addEventListener('message', handleMessage as EventListener);
+        return () => {
+            window.removeEventListener('message', handleMessage);
+            document.removeEventListener('message', handleMessage as EventListener);
+        }
+    }, []);
+
 
     const startCamera = async () => {
         try {
             const stream = await navigator.mediaDevices.getUserMedia({
-                video: { facingMode: 'environment' }, // user前鏡頭、environment後鏡頭
+                video: { facingMode }, // user前鏡頭、environment後鏡頭
                 audio: false,
             });
 
@@ -75,34 +100,43 @@ const Camera = () => {
         <div style={{ textAlign: 'center', padding: '20px' }}>
             <h2>Web相機</h2>
 
-            <div style={{ marginBottom: '20px' }}>
-                <button onClick={toggleCamera} style={{ marginRight: '10px' }}>
-                    {isCameraOn ? '關閉相機' : '啟動相機'}
-                </button>
-                <button onClick={capturePhoto} disabled={!isCameraOn}>拍照</button>
-            </div>
+            {!hasPermission && (
+                <p style={{ color: 'red' }}>⚠️未授權相機，無法使用拍照功能</p>
+            )}
 
-            {error && <p style={{ color: 'red' }}>{error}</p>}
 
-            <div style={{ display: 'flex', justifyContent: 'center', gap: '20px' }}>
-                {/* 即時影像 */}
-                <video
-                    ref={videoRef}
-                    style={{ width: '320px', border: '1px solid #ccc', borderRadius: '8px' }}
-                    playsInline
-                    muted
-                />
-
-                {/* 預覽圖 */}
-                {photoUrl && (
-                    <div>
-                        <img
-                            src={photoUrl}
-                            alt="拍照"
-                            style={{ width: '320px', borderRadius: '8px', border: '1px solid #666' }} />
+            {hasPermission && (
+                <>
+                    <div style={{ marginBottom: '20px' }}>
+                        <button onClick={toggleCamera} style={{ marginRight: '10px' }}>
+                            {isCameraOn ? '關閉相機' : '啟動相機'}
+                        </button>
+                        <button onClick={capturePhoto} disabled={!isCameraOn}>拍照</button>
                     </div>
-                )}
-            </div>
+
+                    {error && <p style={{ color: 'red' }}>{error}</p>}
+
+                    <div style={{ display: 'flex', justifyContent: 'center', gap: '20px' }}>
+                        {/* 即時影像 */}
+                        <video
+                            ref={videoRef}
+                            style={{ width: '320px', border: '1px solid #ccc', borderRadius: '8px' }}
+                            playsInline
+                            muted
+                        />
+
+                        {/* 預覽圖 */}
+                        {photoUrl && (
+                            <div>
+                                <img
+                                    src={photoUrl}
+                                    alt="拍照"
+                                    style={{ width: '320px', borderRadius: '8px', border: '1px solid #666' }} />
+                            </div>
+                        )}
+                    </div>
+                </>
+            )}
 
             {/* 隱藏 canvas */}
             <canvas ref={canvasRef} style={{ display: 'none' }} />
@@ -116,8 +150,7 @@ const Camera = () => {
                 </div>
             )}
         </div>
-    );
-
+    )
 }
 
 export default Camera;
