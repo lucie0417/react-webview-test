@@ -36,10 +36,6 @@ const Camera = () => {
         }
     }, []);
 
-    useEffect(() => {
-        if (isCameraOn) startCamera();
-    }, [facingMode])
-
 
     const startCamera = async () => {
         try {
@@ -93,6 +89,10 @@ const Camera = () => {
         setFacingMode(prev => prev === 'user' ? 'environment' : 'user');
     }
 
+    useEffect(() => {
+        if (isCameraOn) startCamera();
+    }, [facingMode]);
+
     const sendPhoto = () => {
         console.log('photoUrl', photoUrl);
 
@@ -112,15 +112,18 @@ const Camera = () => {
                 <p style={{ color: 'red' }}>⚠️未授權相機，無法使用拍照功能</p>
             )}
 
-
             {hasPermission === true && (
                 <>
                     <div style={{ marginBottom: '20px' }}>
                         <button onClick={switchCamera} style={{ marginRight: '10px' }}>
                             {isCameraOn ? '關閉相機' : '啟動相機'}
                         </button>
-                        <button onClick={capturePhoto} disabled={!isCameraOn}>拍照</button>
-                        <button onClick={switchCamera} disabled={!isCameraOn}>切換前/後鏡頭</button>
+                        <button onClick={capturePhoto} disabled={!isCameraOn} style={{ marginRight: '10px' }}>
+                            拍照
+                        </button>
+                        <button onClick={switchCamera} disabled={!isCameraOn}>
+                            切換前/後鏡頭
+                        </button>
                     </div>
 
                     {error && <p style={{ color: 'red' }}>{error}</p>}
