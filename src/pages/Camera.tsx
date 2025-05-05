@@ -36,7 +36,15 @@ const Camera = () => {
         }
     }, []);
 
-
+   // 開啟/關閉相機
+    const toggleCamera = () => {
+        if (isCameraOn) {
+            stopCamera();
+        } else {
+            startCamera();
+        }
+    };
+    
     const startCamera = async () => {
         try {
             const stream = await navigator.mediaDevices.getUserMedia({
@@ -52,6 +60,15 @@ const Camera = () => {
         } catch (err) {
             console.error('相機開啟失敗', err);
             setError('無法開啟相機，檢查權限或裝置是否支援');
+        }
+    } 
+    
+    const stopCamera = () => {
+        if (videoRef.current?.srcObject) {
+            const stream = videoRef.current?.srcObject as MediaStream;
+            stream.getTracks().forEach((track) => track.stop()); // video track, audio track..
+            videoRef.current.srcObject = null; // 將來源清空
+            setIsCameraOn(false);
         }
     }
 
@@ -73,15 +90,7 @@ const Camera = () => {
         }
     }
 
-    const stopCamera = () => {
-        if (videoRef.current?.srcObject) {
-            const stream = videoRef.current?.srcObject as MediaStream;
-            stream.getTracks().forEach((track) => track.stop()); // video track, audio track..
-            videoRef.current.srcObject = null; // 將來源清空
-            setIsCameraOn(false);
-        }
-    }
-
+    // 切換前後鏡頭
     const switchCamera = async () => {
         if (!isCameraOn) return;
 
@@ -115,7 +124,7 @@ const Camera = () => {
             {hasPermission === true && (
                 <>
                     <div style={{ marginBottom: '20px' }}>
-                        <button onClick={switchCamera} style={{ marginRight: '10px' }}>
+                        <button onClick={toggleCamera} style={{ marginRight: '10px' }}>
                             {isCameraOn ? '關閉相機' : '啟動相機'}
                         </button>
                         <button onClick={capturePhoto} disabled={!isCameraOn} style={{ marginRight: '10px' }}>
