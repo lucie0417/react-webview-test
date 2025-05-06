@@ -96,12 +96,11 @@ const Camera = () => {
 
         stopCamera();
         setFacingMode(prev => prev === 'user' ? 'environment' : 'user');
-        startCamera();
+        useEffect(() => {
+            if (isCameraOn) startCamera();
+        }, [facingMode]);
     }
 
-    useEffect(() => {
-        if (isCameraOn) startCamera();
-    }, [facingMode]);
 
     const sendPhoto = () => {
         console.log('photoUrl', photoUrl);
@@ -144,8 +143,6 @@ const Camera = () => {
                             ref={videoRef}
                             style={{ width: '320px', border: '1px solid #ccc', borderRadius: '8px' }}
                             playsInline
-                            webkit-playsinline
-                            x5-video-player-type="h5-page"
                             autoPlay
                             muted
                         />
