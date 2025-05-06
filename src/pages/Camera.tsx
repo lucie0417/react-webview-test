@@ -54,7 +54,7 @@ const Camera = () => {
 
             if (videoRef.current) {
                 videoRef.current.srcObject = stream;
-                videoRef.current.play();
+                await videoRef.current.play();
                 setIsCameraOn(true);
             }
         } catch (err) {
@@ -100,7 +100,6 @@ const Camera = () => {
 
     useEffect(() => {
         if (isCameraOn) startCamera();
-        alert(`facingMode ${facingMode}`)
     }, [facingMode]);
 
     const sendPhoto = () => {
@@ -144,6 +143,7 @@ const Camera = () => {
                             ref={videoRef}
                             style={{ width: '320px', border: '1px solid #ccc', borderRadius: '8px' }}
                             playsInline
+                            autoPlay
                             muted
                         />
 
