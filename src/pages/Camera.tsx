@@ -96,11 +96,11 @@ const Camera = () => {
 
         stopCamera();
         setFacingMode(prev => prev === 'user' ? 'environment' : 'user');
-        startCamera();
     }
 
     useEffect(() => {
         if (isCameraOn) startCamera();
+        alert(`facingMode ${facingMode}`)
     }, [facingMode]);
 
     const sendPhoto = () => {
