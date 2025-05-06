@@ -54,7 +54,7 @@ const Camera = () => {
 
             if (videoRef.current) {
                 videoRef.current.srcObject = stream;
-                await videoRef.current.play();
+                videoRef.current.play();
                 setIsCameraOn(true);
             }
         } catch (err) {
@@ -143,6 +143,8 @@ const Camera = () => {
                             ref={videoRef}
                             style={{ width: '320px', border: '1px solid #ccc', borderRadius: '8px' }}
                             playsInline
+                            webkit-playsinline
+                            x5-video-player-type="h5-page"
                             autoPlay
                             muted
                         />
