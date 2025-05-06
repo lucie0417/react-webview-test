@@ -141,6 +141,7 @@ const Camera = () => {
                             ref={videoRef}
                             style={{ width: '320px', border: '1px solid #ccc', borderRadius: '8px' }}
                             playsInline
+                            webkit-playsinline
                             autoPlay
                             muted
                         />
