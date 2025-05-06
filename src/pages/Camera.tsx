@@ -96,9 +96,7 @@ const Camera = () => {
 
         stopCamera();
         setFacingMode(prev => prev === 'user' ? 'environment' : 'user');
-        useEffect(() => {
-            if (isCameraOn) startCamera();
-        }, [facingMode]);
+        startCamera();
     }
 
 
