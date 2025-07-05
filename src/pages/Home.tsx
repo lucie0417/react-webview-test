@@ -1,17 +1,28 @@
 import { Link } from "react-router-dom";
 
-
 const Home = () => {
+    const handleToAngularMessage = () => {
+        if ((window as any).ReactNativeWebView?.postMessage) {
+            (window as any).ReactNativeWebView?.postMessage('toAngularProject');
+        } else {
+            console.warn('Message Error!')
+        }
+    }
+
     return (
-        <div>
+        <>
             <h1>HOME!</h1>
-            <button>
-                <Link to="/gps">GPS!</Link>
+            <Link to="/gps">
+                <button>GPS!</button>
+            </Link>
+            <Link to="/camera">
+                <button style={{ marginLeft: '10px' }}>CAMERA!</button>
+            </Link>
+
+            <button onClick={handleToAngularMessage}>
+                前往Angular專案
             </button>
-            <button style={{ marginLeft: '10px' }}>
-                <Link to="/camera">CAMERA!</Link>
-            </button>
-        </div >
+        </>
     )
 }
 
